@@ -10,7 +10,7 @@ body {
 }
 header {
   background: #23272f;
-  color: #ffd700;
+  color: #2196f3;
   padding: 2rem 1rem 1rem 1rem;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -21,7 +21,7 @@ header h1 {
   letter-spacing: 2px;
 }
 header .contact a {
-  color: #ffd700;
+  color: #2196f3;
   text-decoration: none;
   margin: 0 0.5rem;
 }
@@ -45,13 +45,31 @@ main {
 .card:hover {
   box-shadow: 0 4px 24px rgba(0,0,0,0.35);
 }
+.card-bullet {
+  background: #22252a;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(33,150,243,0.08);
+  margin-bottom: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  transition: box-shadow 0.2s;
+  border-left: 4px solid #2196f3;
+}
+.card-bullet:last-child {
+  margin-bottom: 0;
+}
 h2 {
-  color: #ffd700;
+  color: #2196f3;
   border-bottom: 2px solid #333;
   padding-bottom: 0.3rem;
   margin-top: 0;
 }
 ul {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+.card-bullet > ul {
+  margin-top: 0.7rem;
+  margin-bottom: 0;
   padding-left: 1.2rem;
 }
 .job h3 {
@@ -67,7 +85,7 @@ footer {
   text-align: center;
   padding: 1rem;
   background: #23272f;
-  color: #ffd700;
+  color: #2196f3;
   margin-top: auto;
   flex-shrink: 0;
   width: 100%;
@@ -83,6 +101,9 @@ footer {
     font-size: 1.5rem;
   }
   .card {
+    padding: 1rem;
+  }
+  .card-bullet {
     padding: 1rem;
   }
 } 
