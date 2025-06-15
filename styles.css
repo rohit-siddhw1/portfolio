@@ -168,6 +168,9 @@ footer {
   body {
     font-size: 0.97rem;
   }
+  .contact-sep {
+    display: none;
+  }
 }
 html {
   box-sizing: border-box;
