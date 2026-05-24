@@ -3,102 +3,691 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rohit Siddheshwar | Portfolio</title>
+  
+  <!-- SEO Meta Tags -->
+  <title>Rohit Siddheshwar | Senior Backend & Systems Engineer | Portfolio</title>
+  <meta name="description" content="Senior Software Engineer specializing in high-throughput, low-latency distributed backend systems, ad-tech, custom distributed caching, and algorithmic data structures. Currently at Atlassian.">
+  <meta name="keywords" content="Rohit Siddheshwar, Software Engineer, Backend Engineer, Systems Engineer, Atlassian, Media.net, Go, Distributed Systems, Redis, Kafka, Kubernetes, System Design, Quad Trees, Segment Trees, Bengaluru, Mumbai">
+  <meta name="author" content="Rohit Siddheshwar">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Rohit Siddheshwar | Senior Backend & Systems Engineer">
+  <meta property="og:description" content="Portfolio of Rohit Siddheshwar, showcasing high-scale backend engineering projects, distributed caching architectures, and algorithmic systems.">
+  <meta property="og:url" content="https://linkedin.com/in/rohit-siddheshwar-6ab534100">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rohit Siddheshwar | Senior Backend & Systems Engineer">
+  <meta name="twitter:description" content="Portfolio of Rohit Siddheshwar, showcasing high-scale backend engineering projects, distributed caching architectures, and algorithmic systems.">
+
+  <!-- Light/Dark Theme Meta Declarations -->
+  <meta name="color-scheme" content="light dark">
+  
+  <!-- FOUC (Flash of Unstyled Content) Prevention Script -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('color-scheme');
+      if (savedTheme) {
+        document.querySelector('meta[name="color-scheme"]').content = savedTheme === 'system' ? 'light dark' : savedTheme;
+        if (savedTheme !== 'system') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+          document.documentElement.style.colorScheme = savedTheme;
+        }
+      }
+    })();
+  </script>
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Rohit Siddheshwar</h1>
-    <p class="contact">
-      <a href="mailto:rohit.siddheshwar@gmail.com">rohit.siddheshwar@gmail.com</a>
-      <span class="contact-sep">|</span>
-      <a href="tel:9930777025">9930777025</a>
-      <span class="contact-sep">|</span>
-      <a href="https://linkedin.com/in/rohit-siddheshwar-6ab534100" target="_blank">LinkedIn</a>
-    </p>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="prompt-sym">rohit@backend:~</span>
+      <span class="cursor"></span>
+    </div>
+    <nav class="main-nav">
+      <a href="#systems">Dashboard</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+    </nav>
+    <div class="theme-switch-container">
+      <button class="theme-btn" id="theme-btn-light" aria-label="Switch to Light Theme" title="Light Theme">
+        <svg viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.02-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+      </button>
+      <button class="theme-btn" id="theme-btn-dark" aria-label="Switch to Dark Theme" title="Dark Theme">
+        <svg viewBox="0 0 24 24"><path d="M9.37 5.51c-.18-.64-.86-1.02-1.5-.84-2.32.63-4.13 2.5-4.72 4.88-.69 2.76.62 5.6 3.12 6.7 2.5 1.1 5.52.3 7.15-1.92.4-.55.2-1.32-.41-1.63-.5-.25-1.1-.21-1.55.12-1.6 1.2-3.9 1.06-5.32-.36-1.42-1.42-1.57-3.72-.36-5.32.33-.45.37-1.05.12-1.55zM21 14h-1V7c0-.55-.45-1-1-1s-1 .45-1 1v7h-7c-.55 0-1 .45-1 1s.45 1 1 1h7v5c0 .55.45 1 1 1s1-.45 1-1v-5h1c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg>
+      </button>
+      <button class="theme-btn" id="theme-btn-system" aria-label="Switch to System Theme" title="System Settings">
+        <svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+      </button>
+    </div>
   </header>
-  <main>
-    <section id="work-experience" class="card">
-      <h2>Work Experience</h2>
-      <div class="job">
-        <h3>MEDIA.NET | Manager - Web Tech</h3>
-        <p class="location">Mumbai, IN | July 2016 – Present</p>
-        <div class="card-bullet">
-          <strong>PurePlay - Video Content and Ad Serving:</strong>
-          <ul>
-            <li>Designed and Developed an ecosystem of services for video content curation using IAB and Sprig categories. Engineered storage and transcoding solutions for different bitrates and streaming formats.</li>
-            <li>Integrated a customized Prebid solution for video ads to increase ad fill rates. Introduced a player solution with a host of features that <b>increased user-engagement by 18%</b>.</li>
-            <li>Within 4 months, the product contributed to a <b>2% increase in monthly revenue</b> of the company.</li>
-          </ul>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Hero Panel -->
+    <section class="hero-grid">
+      <div class="hero-info">
+        <h1>Hi, I'm <span class="name">Rohit</span></h1>
+        <div class="hero-subtitle">Senior Software Engineer | Distributed Systems & Backend</div>
+        <p class="hero-desc">
+          I design and build reliable, low-latency distributed systems capable of handling billions of transactions. Specialized in designing high-throughput caching systems, optimizing search indexes, Ad-Tech architecture, and reliability frameworks. Currently engineering high-capacity APIs at Atlassian.
+        </p>
+        <div class="hero-links">
+          <a href="mailto:rohit.siddheshwar@gmail.com" class="contact-badge" title="Send Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            rohit.siddheshwar@gmail.com
+          </a>
+          <a href="tel:9930777025" class="contact-badge" title="Call Phone">
+            <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-2.23 2.23c-2.82-1.44-5.17-3.79-6.61-6.62l2.24-2.24c.28-.27.36-.66.25-1.02-.37-1.12-.57-2.3-.57-3.53 0-.55-.45-1-1-1H3.5c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
+            +91 9930777025
+          </a>
+          <a href="https://linkedin.com/in/rohit-siddheshwar-6ab534100" target="_blank" rel="noopener" class="contact-badge" title="LinkedIn Profile">
+            <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+            LinkedIn
+          </a>
         </div>
-        <div class="card-bullet">
-          <strong>Graph-Engine:</strong>
-          <ul>
-            <li>Engineered a finite automata system for efficient Ad and Content selection on SERP. Managed API dependencies and compliances using Directed Acyclic Graphs (DAGs) to align with business requirements and <b>increasing ad fill rate by 14%</b>.</li>
-            <li>Achieved a <b>40% reduction in server response times</b> and <b>9% boost in revenue</b>.</li>
-          </ul>
+        <div class="hero-actions">
+          <a href="#architecture" class="btn-primary">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
+            Simulate Systems
+          </a>
+          <button class="btn-secondary" id="hero-terminal-trigger">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 12H5v-2h6v2zm9-4H5V8h15v4z" fill="currentColor"/></svg>
+            Open Console
+          </button>
         </div>
-        <div class="card-bullet">
-          <strong>Optimizing CTRs for Display and Search Traffic:</strong>
-          <ul>
-            <li><b>Improved CTRs by 5% for Display and 17% for Search Traffic</b> using color science and LLMs (LLama and Llava) to extract categories and associated emotions. Collaborated with UX experts and enhanced the look and feel of creatives and SERP pages by understanding user behaviour.</li>
-            <li>Implemented session and user A/B testing.</li>
-          </ul>
+      </div>
+      <div class="systems-status-panel">
+        <div class="status-header">
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            SYSTEMS_MONITOR: ACTIVE
+          </div>
+          <span class="status-ip" id="live-client-ip">127.0.0.1</span>
         </div>
-        <div class="card-bullet">
-          <strong>Re-Architecture Ad-Serving:</strong>
-          <ul>
-            <li>Led a team of developers in an architectural overhaul, replacing the traditional CDN caching layer with a scalable backend distributed system across data centers and cloud. Improved cache hit rates and enabled advanced control features like UI/UX and feature A/B testing. <b>Reduced latency by approximately 200ms</b> (35% of total response time).</li>
-            <li><b>Boosted QPS per server by 40%</b>, thereby <b>reducing costs by 15%</b> and <b>boosted revenue by 3%</b>.</li>
-          </ul>
-        </div>
-        <div class="card-bullet">
-          <strong>IP to Geo lookup Database:</strong>
-          <ul>
-            <li>Collaborated and launched a common multi-DC solution across teams by optimizing storage and lookups of IPv4 and IPv6 addresses using Quad Trees, Segment Trees, and sorted sets.</li>
-            <li><b>Reduced lookup times by nearly 45%</b> across all traffic.</li>
-          </ul>
+        <div class="status-metrics">
+          <div class="status-metric-row">
+            <span class="label">Backend Load status:</span>
+            <span class="val green" id="status-load">HEALTHY (0.24)</span>
+          </div>
+          <div class="status-metric-row">
+            <span class="label">Avg API Latency:</span>
+            <span class="val" id="status-latency">1.18 ms</span>
+          </div>
+          <div class="status-metric-row">
+            <span class="label">Active Engine QPS:</span>
+            <span class="val" id="status-qps">12,481 QPS</span>
+          </div>
+          <div class="status-metric-row">
+            <span class="label">Cache Hit Ratio:</span>
+            <span class="val green" id="status-cache">94.8%</span>
+          </div>
+          <div class="status-metric-row">
+            <span class="label">System Uptime:</span>
+            <span class="val" id="status-uptime">99.9997%</span>
+          </div>
         </div>
       </div>
     </section>
-    <section id="skills" class="card">
-      <h2>Skills</h2>
-      <div class="card-bullet">
-        <ul>
-          <li><strong>Languages:</strong> Go, JavaScript, NodeJS, PHP, HTML/CSS, SQL</li>
-          <li><strong>Technology:</strong> Git, Akamai, GCP, Redis, Aerospike, Kafka, Kubernetes, Docker, CI/CD, Linux</li>
-          <li><strong>Miscellaneous:</strong> Project Management, System Design, Collaboration, Communication</li>
-          <li><strong>Domains:</strong> Ad-Tech, Video Streaming, Distributed Systems, Chrome Extensions, LLM Applications</li>
-        </ul>
+
+    <!-- Systems Dashboard Panel -->
+    <section id="systems" class="panel reveal-on-scroll">
+      <div class="panel-header">
+        <h2>System Performance Metrics</h2>
+        <div class="line"></div>
+      </div>
+      <div class="metrics-grid">
+        
+        <div class="metric-card active" data-metric-target="latency" title="Click to view corresponding architecture">
+          <div class="metric-header">
+            <span class="metric-title">Latency Overhaul</span>
+            <span class="metric-badge">Ad-Serving</span>
+          </div>
+          <div class="metric-body">
+            <span class="metric-value">-200ms</span>
+            <span class="metric-change negative">▼ 35%</span>
+          </div>
+          <div class="metric-desc">Replaced CDN cache with scalable distributed caching system.</div>
+          <canvas class="metric-chart" id="chart-latency"></canvas>
+        </div>
+
+        <div class="metric-card" data-metric-target="qps" title="Click to view corresponding architecture">
+          <div class="metric-header">
+            <span class="metric-title">QPS per Server</span>
+            <span class="metric-badge">Throughput</span>
+          </div>
+          <div class="metric-body">
+            <span class="metric-value">+40%</span>
+            <span class="metric-change">▲ 40%</span>
+          </div>
+          <div class="metric-desc">Optimized concurrent connections and system caching layer.</div>
+          <canvas class="metric-chart" id="chart-qps"></canvas>
+        </div>
+
+        <div class="metric-card" data-metric-target="geoip" title="Click to view corresponding architecture">
+          <div class="metric-header">
+            <span class="metric-title">IP Lookup Speed</span>
+            <span class="metric-badge">Algorithms</span>
+          </div>
+          <div class="metric-body">
+            <span class="metric-value">-45%</span>
+            <span class="metric-change negative">▼ 45%</span>
+          </div>
+          <div class="metric-desc">Quad Trees, Segment Trees, and sorted sets in multi-DC structure.</div>
+          <canvas class="metric-chart" id="chart-geoip"></canvas>
+        </div>
+
+        <div class="metric-card" data-metric-target="adoption" title="Click to view corresponding reliability templates">
+          <div class="metric-header">
+            <span class="metric-title">Jira templates</span>
+            <span class="metric-badge">Reliability</span>
+          </div>
+          <div class="metric-body">
+            <span class="metric-value">25+</span>
+            <span class="metric-change">Teams</span>
+          </div>
+          <div class="metric-desc">Config-based generation of dashboards/alarms across Jira Org.</div>
+          <canvas class="metric-chart" id="chart-adoption"></canvas>
+        </div>
+
       </div>
     </section>
-    <section id="side-projects" class="card">
-      <h2>Side Projects</h2>
-      <div class="card-bullet">
-        <strong>Debug+ (Internal Tool):</strong>
-        <ul>
-          <li>Developed a Chrome extension for HTTP request analysis, enabling interception and modification of headers, URL, and payload for efficient client-side debugging.</li>
-          <li>Featured a unique comparison tool providing differential analysis between two URLs, streamlining the debugging process and aiding in efficient problem resolution.</li>
-        </ul>
+
+    <!-- Architecture Visualizer Panel -->
+    <section id="architecture" class="panel reveal-on-scroll">
+      <div class="panel-header">
+        <h2>Interactive System Architectures</h2>
+        <div class="line"></div>
       </div>
-      <div class="card-bullet">
-        <strong>Tree-Leveled Cipher:</strong>
-        <ul>
-          <li>Devised an algorithm for basic encryption and decryption based on the concept of binary trees and level-order traversal.</li>
-        </ul>
+      <div class="architecture-box">
+        <div class="arch-controls">
+          <div class="arch-tabs">
+            <button class="arch-tab-btn active" data-tab="cache">Distributed Ad-Serving Cache</button>
+            <button class="arch-tab-btn" data-tab="tree">IP-to-Geo Tree Lookup</button>
+          </div>
+          <button class="arch-action-btn" id="run-simulation-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
+            Run Load Test
+          </button>
+        </div>
+        <div class="arch-canvas-container">
+          
+          <!-- Diagram 1: Cache Overhaul -->
+          <div class="arch-diagram active" id="diag-cache">
+            <svg class="arch-links-overlay" id="cache-links">
+              <!-- Client to LB -->
+              <path id="path-client-lb" d="M 120,130 C 145,130 155,130 180,130" />
+              <!-- LB to Cache -->
+              <path id="path-lb-cache" d="M 280,130 C 310,130 320,50 360,50" />
+              <!-- LB to Origin -->
+              <path id="path-lb-origin" d="M 280,130 C 310,130 320,225 360,225" />
+              <!-- Cache to Client (Return) -->
+              <path id="path-cache-client" d="M 360,35 C 310,35 155,115 120,120" />
+              <!-- Origin to DB -->
+              <path id="path-origin-db" d="M 520,225 C 555,225 565,225 600,225" />
+              <!-- DB to Origin -->
+              <path id="path-db-origin" d="M 600,240 C 565,240 555,240 520,240" />
+              <!-- Origin to LB (Return) -->
+              <path id="path-origin-client" d="M 360,240 C 300,240 155,140 120,135" />
+            </svg>
+            
+            <div class="arch-node" id="node-client">
+              <span class="title">Clients</span>
+              <span class="details">Web Traffic</span>
+            </div>
+            
+            <div class="arch-node" id="node-lb">
+              <span class="title">Load Balancer</span>
+              <span class="details">Nginx / QPS Dist.</span>
+            </div>
+            
+            <div class="arch-node" id="node-cache">
+              <span class="title">Distributed Cache</span>
+              <span class="details" id="cache-details">Hit Rate: 94.8%</span>
+            </div>
+            
+            <div class="arch-node" id="node-origin">
+              <span class="title">Origin Servers</span>
+              <span class="details">Ad Selection Service</span>
+            </div>
+            
+            <div class="arch-node" id="node-db">
+              <span class="title">Aerospike / DB</span>
+              <span class="details">User Segments</span>
+            </div>
+          </div>
+          
+          <!-- Diagram 2: IP to Geo Tree Lookup -->
+          <div class="arch-diagram" id="diag-tree">
+            <div class="tree-search-bar">
+              <input type="text" id="ip-search-input" value="8.8.8.8" placeholder="Enter IP address...">
+              <button id="ip-search-btn">Find Region</button>
+              <button id="ip-random-btn">Random IP</button>
+            </div>
+            <div class="tree-search-status" id="tree-search-msg">Enter an IP to trace tree lookup path.</div>
+            <div class="tree-container">
+              <!-- Root -->
+              <div class="tree-node-row">
+                <div class="tree-node" id="tree-node-root">Root (Segment Tree)</div>
+              </div>
+              <!-- Level 1 -->
+              <div class="tree-node-row">
+                <div class="tree-node" id="tree-node-L1">IPv4: 0.0.0.0/1</div>
+                <div class="tree-node" id="tree-node-R1">IPv4: 128.0.0.0/1</div>
+              </div>
+              <!-- Level 2 -->
+              <div class="tree-node-row">
+                <div class="tree-node" id="tree-node-L2">IPv4: 0.0.0.0/2</div>
+                <div class="tree-node" id="tree-node-M2">IPv4: 64.0.0.0/2</div>
+                <div class="tree-node" id="tree-node-R2">IPv4: 128.0.0.0/2</div>
+              </div>
+              <!-- Level 3 (Leaves) -->
+              <div class="tree-node-row">
+                <div class="tree-node" id="tree-leaf-1">US Region</div>
+                <div class="tree-node" id="tree-leaf-2">EU Region</div>
+                <div class="tree-node" id="tree-leaf-3">AP Region</div>
+                <div class="tree-node" id="tree-leaf-4">IN Region</div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
       </div>
     </section>
-    <section id="education" class="card">
-      <h2>Education</h2>
-      <div class="card-bullet">
-        <p><strong>Bachelor of Engineering</strong> | Computer Science<br>
-        Fr. Conceicao Rodrigues College of Engineering, Mumbai, IN | Aug 2012 - Jun 2016</p>
+
+    <!-- Work Experience Panel -->
+    <section id="experience" class="panel reveal-on-scroll">
+      <div class="panel-header">
+        <h2>Professional Work Tenure</h2>
+        <div class="line"></div>
+      </div>
+      <div class="experience-layout">
+        
+        <div class="experience-list">
+          <button class="company-tab-btn active" data-job="atlassian">
+            <span class="name">ATLASSIAN</span>
+            <span class="role">Senior Software Engineer</span>
+            <span class="date">Dec 2024 – Present</span>
+          </button>
+          <button class="company-tab-btn" data-job="medianet">
+            <span class="name">MEDIA.NET</span>
+            <span class="role">Manager - Web Tech</span>
+            <span class="date">July 2016 – Dec 2024</span>
+          </button>
+        </div>
+
+        <!-- Simulated IDE Window -->
+        <div class="editor-window">
+          <div class="editor-header">
+            <div class="editor-window-controls">
+              <span class="window-dot close"></span>
+              <span class="window-dot min"></span>
+              <span class="window-dot expand"></span>
+            </div>
+            <div class="editor-tabs">
+              <div class="editor-tab active" id="editor-tab-file">atlassian.json</div>
+            </div>
+            <div class="editor-view-toggle">
+              <button class="editor-view-btn active" data-view="code">Code View</button>
+              <button class="editor-view-btn" data-view="formatted">Formatted</button>
+            </div>
+          </div>
+          <div class="editor-body">
+            
+            <!-- Atlassian Pane -->
+            <div class="editor-pane active" id="pane-atlassian">
+              <!-- Code view -->
+              <div class="code-view active" id="code-atlassian">
+{
+  <span class="key">"company"</span>: <span class="string">"ATLASSIAN"</span>,
+  <span class="key">"role"</span>: <span class="string">"Senior Software Engineer, Backend"</span>,
+  <span class="key">"location"</span>: <span class="string">"Bengaluru, IN"</span>,
+  <span class="key">"period"</span>: <span class="string">"Dec 2024 – Present"</span>,
+  <span class="key">"impact"</span>: {
+    <span class="key">"reliability"</span>: {
+      <span class="key">"dashboard_templates"</span>: <span class="string">"Config based generation of dashboards/alarms adopted by 25+ teams within Jira Org."</span>,
+      <span class="key">"alerting_optimization"</span>: <span class="string">"Multi-trials and Volume based alerting considering weekends and holidays to prevent noise."</span>
+    },
+    <span class="key">"jira_attachments"</span>: {
+      <span class="key">"attachment_filtering"</span>: <span class="string">"Architected filtering by attachment types. Improved search times by 12%."</span>,
+      <span class="key">"document_consolidation"</span>: <span class="string">"Consolidated static files/first-party documents into single API with filtering and pagination."</span>
+    }
+  }
+}</div>
+              <!-- Formatted view -->
+              <div class="formatted-view" id="formatted-atlassian">
+                <div class="job-header">
+                  <h3>ATLASSIAN <span style="font-weight:normal; font-size:0.9em; color:var(--text-muted);">| Senior Software Engineer, Backend</span></h3>
+                  <div class="meta-row">
+                    <span>Bengaluru, IN</span>
+                    <span>•</span>
+                    <span>Dec 2024 – Present</span>
+                  </div>
+                </div>
+                <div class="job-bullet-section">
+                  <div class="job-bullet-title">Reliability Engineering</div>
+                  <ul class="job-bullet-list">
+                    <li>Created a Jira-wide Template for config-based generation of dashboards and alarms adopted by <strong>25+ teams</strong> within the Jira Org with further adoption in progress.</li>
+                    <li>Introduced the concept of multi-trials and Volume based alerting that takes into consideration weekends and public holidays to prevent alarm noise.</li>
+                  </ul>
+                </div>
+                <div class="job-bullet-section">
+                  <div class="job-bullet-title">Jira Attachments API</div>
+                  <ul class="job-bullet-list">
+                    <li>Architected the backend API for filtering attachments based on types to introduce tabbed-layouts. <strong>Improved Attachment search times by 12%</strong>.</li>
+                    <li>Designed and implemented the backend API for consolidating static files and first party documents into a single API with support for multiple forms of pagination, sorting, and filtering.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Media.net Pane -->
+            <div class="editor-pane" id="pane-medianet">
+              <!-- Code view -->
+              <div class="code-view active" id="code-medianet">
+<span class="comment"># Media.net Backend Engineering Profile</span>
+<span class="key">company</span>: <span class="string">"MEDIA.NET"</span>
+<span class="key">role</span>: <span class="string">"Manager - Web Tech"</span>
+<span class="key">location</span>: <span class="string">"Mumbai, IN"</span>
+<span class="key">period</span>: <span class="string">"July 2016 – Dec 2024"</span>
+
+<span class="key">projects</span>:
+  - <span class="key">name</span>: <span class="string">"PurePlay - Video Content and Ad Serving"</span>
+    <span class="key">ecosystem</span>: <span class="string">"Engineered transcoding, storage for bitrates, categories (IAB/Sprig)."</span>
+    <span class="key">prebid_integration</span>: <span class="string">"Integrated Prebid solution to increase ad fill rates."</span>
+    <span class="key">impact</span>: 
+      <span class="key">user_engagement</span>: <span class="string">"+18% user engagement boost"</span>
+      <span class="key">revenue</span>: <span class="string">"+2% increase in monthly revenue in 4 months"</span>
+  
+  - <span class="key">name</span>: <span class="string">"Graph-Engine"</span>
+    <span class="key">automata_system</span>: <span class="string">"Finite automata for Ad/Content selection on Search Engine Result Page."</span>
+    <span class="key">dags_dependencies</span>: <span class="string">"Managed API dependencies using Directed Acyclic Graphs (DAGs)."</span>
+    <span class="key">impact</span>:
+      <span class="key">ad_fill_rate</span>: <span class="string">"+14% increase"</span>
+      <span class="key">response_time</span>: <span class="string">"-40% latency reduction"</span>
+      <span class="key">revenue</span>: <span class="string">"+9% boost"</span>
+  
+  - <span class="key">name</span>: <span class="string">"Re-Architecture Ad-Serving"</span>
+    <span class="key">caching_redesign</span>: <span class="string">"Replaced traditional CDN caching layer with custom distributed system."</span>
+    <span class="key">impact</span>:
+      <span class="key">latency</span>: <span class="string">"-200ms (35% speedup)"</span>
+      <span class="key">qps</span>: <span class="string">"+40% QPS per server capacity"</span>
+      <span class="key">costs</span>: <span class="string">"-15% infrastructure savings"</span>
+      <span class="key">revenue</span>: <span class="string">"+3% boost"</span>
+
+  - <span class="key">name</span>: <span class="string">"IP to Geo Lookup Database"</span>
+    <span class="key">caching_redesign</span>: <span class="string">"Multi-DC solution using Quad Trees, Segment Trees, sorted sets."</span>
+    <span class="key">impact</span>:
+      <span class="key">lookup_speed</span>: <span class="string">"-45% lookup times across all traffic"</span></div>
+              <!-- Formatted view -->
+              <div class="formatted-view" id="formatted-medianet">
+                <div class="job-header">
+                  <h3>MEDIA.NET <span style="font-weight:normal; font-size:0.9em; color:var(--text-muted);">| Manager - Web Tech</span></h3>
+                  <div class="meta-row">
+                    <span>Mumbai, IN</span>
+                    <span>•</span>
+                    <span>July 2016 – Dec 2024</span>
+                  </div>
+                </div>
+                <div class="job-bullet-section">
+                  <div class="job-bullet-title">PurePlay - Video Content and Ad Serving</div>
+                  <ul class="job-bullet-list">
+                    <li>Designed and Developed an ecosystem of services for video content curation using IAB and Sprig categories. Engineered storage and transcoding solutions for different bitrates and streaming formats.</li>
+                    <li>Integrated a customized Prebid solution for video ads to increase ad fill rates. Introduced a player solution that <strong>increased user-engagement by 18%</strong>.</li>
+                    <li>Within 4 months, the product contributed to a <strong>2% increase in monthly revenue</strong> of the company.</li>
+                  </ul>
+                </div>
+                <div class="job-bullet-section">
+                  <div class="job-bullet-title">Graph-Engine (Ad & Content Selection)</div>
+                  <ul class="job-bullet-list">
+                    <li>Engineered a finite automata system for efficient Ad and Content selection on SERP. Managed API dependencies and compliances using Directed Acyclic Graphs (DAGs) to align with business requirements and <strong>increasing ad fill rate by 14%</strong>.</li>
+                    <li>Achieved a <strong>40% reduction in server response times</strong> and <strong>9% boost in revenue</strong>.</li>
+                  </ul>
+                </div>
+                <div class="job-bullet-section">
+                  <div class="job-bullet-title">Re-Architecture Ad-Serving</div>
+                  <ul class="job-bullet-list">
+                    <li>Led a team of developers in an architectural overhaul, replacing the traditional CDN caching layer with a scalable backend distributed system across data centers and cloud with improved cache hit rates. <strong>Reduced latency by approximately 200ms</strong> (35% of total response time).</li>
+                    <li><strong>Boosted QPS per server by 40%</strong>, thereby <strong>reducing costs by 15%</strong> and <strong>boosted revenue by 3%</strong>.</li>
+                  </ul>
+                </div>
+                <div class="job-bullet-section">
+                  <div class="job-bullet-title">IP to Geo Lookup Database</div>
+                  <ul class="job-bullet-list">
+                    <li>Collaborated and launched a common multi-DC solution across teams by optimizing storage and lookups of IPv4 and IPv6 addresses using Quad Trees, Segment Trees, and sorted sets.</li>
+                    <li><strong>Reduced lookup times by nearly 45%</strong> across all traffic.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </section>
+
+    <!-- Skills Panel -->
+    <section id="skills" class="panel reveal-on-scroll">
+      <div class="panel-header">
+        <h2>System & Tech Capabilities</h2>
+        <div class="line"></div>
+      </div>
+      <div class="skills-container">
+        
+        <div class="skills-category">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+            Languages
+          </h3>
+          <div class="skills-list">
+            <span class="skill-tag">Go (Golang)</span>
+            <span class="skill-tag">JavaScript (ES6+)</span>
+            <span class="skill-tag">NodeJS</span>
+            <span class="skill-tag">PHP</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">HTML/CSS</span>
+          </div>
+        </div>
+
+        <div class="skills-category">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
+            Technologies
+          </h3>
+          <div class="skills-list">
+            <span class="skill-tag">Akamai CDN</span>
+            <span class="skill-tag">GCP</span>
+            <span class="skill-tag">Redis</span>
+            <span class="skill-tag">Aerospike</span>
+            <span class="skill-tag">Kafka</span>
+            <span class="skill-tag">Kubernetes</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">CI/CD Pipelines</span>
+          </div>
+        </div>
+
+        <div class="skills-category">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+            System Concepts
+          </h3>
+          <div class="skills-list">
+            <span class="skill-tag">System Design</span>
+            <span class="skill-tag">Distributed Systems</span>
+            <span class="skill-tag">Concurrent Programming</span>
+            <span class="skill-tag">Data Structures</span>
+            <span class="skill-tag">Directed Acyclic Graphs (DAGs)</span>
+            <span class="skill-tag">Quad Trees / Segment Trees</span>
+            <span class="skill-tag">Project Management</span>
+            <span class="skill-tag">Collaboration</span>
+          </div>
+        </div>
+
+        <div class="skills-category">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            Expertise Domains
+          </h3>
+          <div class="skills-list">
+            <span class="skill-tag">Ad-Tech (SERP, SSP, CTR)</span>
+            <span class="skill-tag">Video Curation & Streaming</span>
+            <span class="skill-tag">Chrome Extension Utilities</span>
+            <span class="skill-tag">LLM Content Categorization</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Side Projects Panel -->
+    <section id="projects" class="panel reveal-on-scroll">
+      <div class="panel-header">
+        <h2>Engineered Side Projects</h2>
+        <div class="line"></div>
+      </div>
+      <div class="projects-grid">
+        
+        <div class="project-card">
+          <div class="project-header">
+            <h3>Debug+ <span style="font-weight:normal; font-size:0.8em; color:var(--text-muted);">(Internal Utility)</span></h3>
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z" fill="currentColor"/></svg>
+            </div>
+          </div>
+          <p class="project-desc">
+            A Chrome extension designed for HTTP request analysis and differential debugging. It intercepts and modifies headers, URL parameters, and request payloads in real-time, featuring a visual comparison engine to analyze API response differentials.
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Chrome Extension API</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">Network Intercept</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-header">
+            <h3>Tree-Leveled Cipher</h3>
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" fill="currentColor"/></svg>
+            </div>
+          </div>
+          <p class="project-desc">
+            An encryption algorithm that serializes and encrypts characters by constructing balanced binary search trees from data, mapping cipher blocks through level-order traversal permutations.
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Algorithms</span>
+            <span class="project-tag">Binary Trees</span>
+            <span class="project-tag">Data Security</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Education Panel -->
+    <section class="panel reveal-on-scroll">
+      <div class="panel-header">
+        <h2>Academic Credentials</h2>
+        <div class="line"></div>
+      </div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-details">
+            <h3>Bachelor of Engineering | Computer Science</h3>
+            <div class="college">Fr. Conceicao Rodrigues College of Engineering</div>
+          </div>
+          <div class="edu-meta">
+            <div class="date">Aug 2012 - June 2016</div>
+            <div class="loc">Mumbai, IN</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
-  <footer>
-    <p>&copy; 2024 Rohit Siddheshwar</p>
+
+  <!-- Interactive Terminal Drawer -->
+  <div class="terminal-drawer" id="terminal-drawer">
+    <div class="terminal-header" id="terminal-header">
+      <div class="terminal-title">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 12H5v-2h6v2zm9-4H5V8h15v4z"/></svg>
+        <span>Developer Console</span>
+      </div>
+      <div class="terminal-actions">
+        <span class="terminal-suggest">Type 'help' to begin</span>
+        <button class="terminal-toggle-btn" aria-label="Toggle Console Window">
+          <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <div class="terminal-history" id="terminal-history">
+        <div class="terminal-line output-line system">Rohit Siddheshwar [Backend Engineering Console v1.0.4]</div>
+        <div class="terminal-line output-line system">All systems nominal. Host lookup resolved. Type 'help' for options.</div>
+      </div>
+      <div class="terminal-line input-line">
+        <div class="terminal-prompt">rohit@backend:<span class="path">~</span>$</div>
+        <div class="terminal-input-wrapper">
+          <input type="text" class="terminal-input-field" id="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal command prompt">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <p>&copy; 2026 Rohit Siddheshwar. Built with pure performance in mind. SECURED_HOST_01</p>
   </footer>
+
+  <!-- JSON-LD Structured Data Schema for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Rohit Siddheshwar",
+    "jobTitle": "Senior Software Engineer (Backend)",
+    "url": "https://linkedin.com/in/rohit-siddheshwar-6ab534100",
+    "sameAs": [
+      "https://linkedin.com/in/rohit-siddheshwar-6ab534100",
+      "mailto:rohit.siddheshwar@gmail.com"
+    ],
+    "colleague": [
+      "https://www.atlassian.com"
+    ],
+    "alumniOf": {
+      "@type": "EducationalOrganization",
+      "name": "Fr. Conceicao Rodrigues College of Engineering"
+    },
+    "knowsAbout": [
+      "Backend Development",
+      "Distributed Systems",
+      "Go (Golang)",
+      "System Design",
+      "Redis Caching",
+      "Kafka Streams",
+      "Kubernetes Orchestration",
+      "Ad-Tech Automata",
+      "Load Balancing",
+      "Quad Trees & Segment Trees"
+    ],
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Atlassian"
+    }
+  }
+  </script>
+
   <script src="script.js"></script>
 </body>
-</html> 
+</html>
