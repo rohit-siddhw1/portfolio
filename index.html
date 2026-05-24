@@ -208,9 +208,23 @@
       </div>
       <div class="architecture-box">
         <div class="arch-controls">
-          <div class="arch-tabs">
-            <button class="arch-tab-btn active" data-tab="cache">Distributed Ad-Serving Cache</button>
-            <button class="arch-tab-btn" data-tab="tree">IP-to-Geo Tree Lookup</button>
+          <div class="arch-tabs-container">
+            <div class="arch-tabs-group">
+              <span class="group-title">Atlassian:</span>
+              <div class="arch-tabs">
+                <button class="arch-tab-btn" data-tab="reliability">Reliability Pipeline</button>
+                <button class="arch-tab-btn" data-tab="attachments">Attachments API</button>
+              </div>
+            </div>
+            <div class="arch-tabs-group">
+              <span class="group-title">Media.net:</span>
+              <div class="arch-tabs">
+                <button class="arch-tab-btn active" data-tab="cache">Distributed Cache</button>
+                <button class="arch-tab-btn" data-tab="tree">GeoIP Lookup</button>
+                <button class="arch-tab-btn" data-tab="pureplay">PurePlay Video</button>
+                <button class="arch-tab-btn" data-tab="graph">Graph Engine</button>
+              </div>
+            </div>
           </div>
           <button class="arch-action-btn" id="run-simulation-btn">
             <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
@@ -222,19 +236,12 @@
           <!-- Diagram 1: Cache Overhaul -->
           <div class="arch-diagram active" id="diag-cache">
             <svg class="arch-links-overlay" id="cache-links">
-              <!-- Client to LB -->
               <path id="path-client-lb" d="M 120,130 C 145,130 155,130 180,130" />
-              <!-- LB to Cache -->
               <path id="path-lb-cache" d="M 280,130 C 310,130 320,50 360,50" />
-              <!-- LB to Origin -->
               <path id="path-lb-origin" d="M 280,130 C 310,130 320,225 360,225" />
-              <!-- Cache to Client (Return) -->
               <path id="path-cache-client" d="M 360,35 C 310,35 155,115 120,120" />
-              <!-- Origin to DB -->
               <path id="path-origin-db" d="M 520,225 C 555,225 565,225 600,225" />
-              <!-- DB to Origin -->
               <path id="path-db-origin" d="M 600,240 C 565,240 555,240 520,240" />
-              <!-- Origin to LB (Return) -->
               <path id="path-origin-client" d="M 360,240 C 300,240 155,140 120,135" />
             </svg>
             
@@ -273,28 +280,193 @@
             </div>
             <div class="tree-search-status" id="tree-search-msg">Enter an IP to trace tree lookup path.</div>
             <div class="tree-container">
-              <!-- Root -->
               <div class="tree-node-row">
                 <div class="tree-node" id="tree-node-root">Root (Segment Tree)</div>
               </div>
-              <!-- Level 1 -->
               <div class="tree-node-row">
                 <div class="tree-node" id="tree-node-L1">IPv4: 0.0.0.0/1</div>
                 <div class="tree-node" id="tree-node-R1">IPv4: 128.0.0.0/1</div>
               </div>
-              <!-- Level 2 -->
               <div class="tree-node-row">
                 <div class="tree-node" id="tree-node-L2">IPv4: 0.0.0.0/2</div>
                 <div class="tree-node" id="tree-node-M2">IPv4: 64.0.0.0/2</div>
                 <div class="tree-node" id="tree-node-R2">IPv4: 128.0.0.0/2</div>
               </div>
-              <!-- Level 3 (Leaves) -->
               <div class="tree-node-row">
                 <div class="tree-node" id="tree-leaf-1">US Region</div>
                 <div class="tree-node" id="tree-leaf-2">EU Region</div>
                 <div class="tree-node" id="tree-leaf-3">AP Region</div>
                 <div class="tree-node" id="tree-leaf-4">IN Region</div>
               </div>
+            </div>
+          </div>
+
+          <!-- Diagram 3: Atlassian Reliability Pipeline -->
+          <div class="arch-diagram" id="diag-reliability">
+            <svg class="arch-links-overlay" id="reliability-links">
+              <path id="path-tf-sauron" d="M 140,130 C 155,130 165,130 180,130" />
+              <path id="path-sauron-sfx" d="M 300,130 C 315,130 325,130 340,130" />
+              <path id="path-sfx-og" d="M 470,130 C 490,130 500,50 520,50" />
+              <path id="path-sfx-slack" d="M 470,130 C 490,130 500,210 520,210" />
+            </svg>
+            
+            <div class="arch-node" id="node-tf">
+              <span class="title">Terraform Config</span>
+              <span class="details">dashboards.tf</span>
+            </div>
+            
+            <div class="arch-node" id="node-sauron">
+              <span class="title">Sauron Deployer</span>
+              <span class="details">Jira Dashboard CD</span>
+            </div>
+            
+            <div class="arch-node" id="node-signalfx">
+              <span class="title">SignalFx Platform</span>
+              <span class="details">Charts & Detectors</span>
+            </div>
+            
+            <div class="arch-node" id="node-opsgenie">
+              <span class="title">OpsGenie Pager</span>
+              <span class="details">On-Call Duty Alert</span>
+            </div>
+            
+            <div class="arch-node" id="node-slack">
+              <span class="title">Slack Channel</span>
+              <span class="details">#alerts-jira-org</span>
+            </div>
+          </div>
+
+          <!-- Diagram 4: Atlassian Merged Attachments API -->
+          <div class="arch-diagram" id="diag-attachments">
+            <div class="tree-search-bar" style="margin-bottom:1.5rem;">
+              <span style="font-family:var(--font-mono); font-size:0.8rem; align-self:center; margin-right:0.5rem;">Pagination Mode:</span>
+              <button class="tree-search-bar button active" id="att-pag-cursor" style="padding:0.3rem 0.6rem; font-size:0.75rem;">Cursor-Based</button>
+              <button class="tree-search-bar button" id="att-pag-offset" style="padding:0.3rem 0.6rem; font-size:0.75rem;">Page-Offset</button>
+            </div>
+            <svg class="arch-links-overlay" id="attachments-links">
+              <path id="path-cli-agg" d="M 120,145 C 135,145 145,145 160,145" />
+              <path id="path-agg-static" d="M 300,145 C 320,145 340,30 360,30" />
+              <path id="path-agg-conf" d="M 300,145 C 320,145 340,95 360,95" />
+              <path id="path-agg-white" d="M 300,145 C 320,145 340,160 360,160" />
+              <path id="path-agg-loom" d="M 300,145 C 320,145 340,225 360,225" />
+              <path id="path-static-sort" d="M 510,30 C 530,30 540,145 560,145" />
+              <path id="path-conf-sort" d="M 510,95 C 530,95 545,145 560,145" />
+              <path id="path-white-sort" d="M 510,160 C 530,160 545,145 560,145" />
+              <path id="path-loom-sort" d="M 510,225 C 530,225 540,145 560,145" />
+              <path id="path-sort-cli" d="M 560,160 C 500,280 200,280 120,160" />
+            </svg>
+            
+            <div class="arch-node" id="node-client-att">
+              <span class="title">Jira UI Client</span>
+              <span class="details" id="attachments-query-type">Cursor: cursor_x9281</span>
+            </div>
+            
+            <div class="arch-node" id="node-aggregator">
+              <span class="title">API Aggregator</span>
+              <span class="details">Concurrency Router</span>
+            </div>
+            
+            <div class="arch-node" id="node-ds-static">
+              <span class="title">Static Uploads</span>
+              <span class="details">Jira S3 Metadata</span>
+            </div>
+            
+            <div class="arch-node" id="node-ds-confluence">
+              <span class="title">Confluence API</span>
+              <span class="details">Linked Docs</span>
+            </div>
+            
+            <div class="arch-node" id="node-ds-whiteboard">
+              <span class="title">Whiteboards</span>
+              <span class="details">Canvas Assets</span>
+            </div>
+            
+            <div class="arch-node" id="node-ds-loom">
+              <span class="title">Loom Video API</span>
+              <span class="details">Embedded Links</span>
+            </div>
+            
+            <div class="arch-node" id="node-sorter">
+              <span class="title">Merge & Sort Engine</span>
+              <span class="details">Merged Sorted Arrays</span>
+            </div>
+          </div>
+
+          <!-- Diagram 5: Media.net PurePlay Video Pipeline -->
+          <div class="arch-diagram" id="diag-pureplay">
+            <div class="tree-search-bar" style="margin-bottom:1.5rem;">
+              <span style="font-family:var(--font-mono); font-size:0.8rem; align-self:center; margin-right:0.5rem;">Mock Video Tag:</span>
+              <input type="text" id="video-tag-input" value="Tech Review" style="width:120px; padding:0.3rem 0.5rem; font-size:0.75rem;">
+              <button id="video-simulate-btn" style="padding:0.3rem 0.6rem; font-size:0.75rem;">Analyze Curation</button>
+            </div>
+            <svg class="arch-links-overlay" id="pureplay-links">
+              <path id="path-pub-class" d="M 155,130 C 170,130 180,130 195,130" />
+              <path id="path-class-prebid" d="M 335,130 C 350,130 360,130 375,130" />
+              <path id="path-prebid-player" d="M 505,130 C 515,130 525,130 540,130" />
+            </svg>
+            
+            <div class="arch-node" id="node-publisher">
+              <span class="title">Publisher Upload</span>
+              <span class="details">Shorts Video Feed</span>
+            </div>
+            
+            <div class="arch-node" id="node-classifier">
+              <span class="title">LLM Classifier</span>
+              <span class="details" id="pureplay-category">IAB: Technology</span>
+            </div>
+            
+            <div class="arch-node" id="node-prebid">
+              <span class="title">Prebid Engine</span>
+              <span class="details" id="pureplay-ad-fill">Video Bid: $3.40 CPM</span>
+            </div>
+            
+            <div class="arch-node" id="node-player" style="border: 2px solid var(--border); display: flex; flex-direction: column; justify-content: flex-end; padding: 0.5rem; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.1)); text-align: left; align-items: stretch;">
+              <div style="flex:1; display:flex; align-items:center; justify-content:center; color:#38bdf8; font-family:var(--font-mono); font-size:0.7rem; font-weight:bold; border: 1px dashed rgba(56, 189, 248, 0.3); border-radius:4px; margin-bottom:0.5rem;" id="player-feed">
+                [Vertical Screen]
+              </div>
+              <span class="title" style="font-size:0.75rem; margin-bottom:0.1rem; color:#fff;">Shorts player</span>
+              <span class="details" id="player-ad-details" style="color:#4ade80; font-size:0.65rem; font-weight:bold;">Ad Overlay: Loading...</span>
+            </div>
+          </div>
+
+          <!-- Diagram 6: Media.net Graph Ad Engine -->
+          <div class="arch-diagram" id="diag-graph">
+            <div class="tree-search-bar" style="margin-bottom:1.5rem;">
+              <span style="font-family:var(--font-mono); font-size:0.8rem; align-self:center; margin-right:0.5rem;">Routing Strategy:</span>
+              <button class="tree-search-bar button active" id="graph-strat-parallel" style="padding:0.3rem 0.6rem; font-size:0.75rem;">Parallel Call</button>
+              <button class="tree-search-bar button" id="graph-strat-waterfall" style="padding:0.3rem 0.6rem; font-size:0.75rem;">Sequential Fallback</button>
+            </div>
+            <svg class="arch-links-overlay" id="graph-links">
+              <path id="path-req-router" d="M 140,130 C 150,130 160,130 170,130" />
+              <path id="path-router-a" d="M 300,130 C 310,130 320,45 340,45" />
+              <path id="path-router-b" d="M 300,130 C 310,130 320,215 340,215" />
+              <path id="path-a-bf" d="M 490,45 C 500,45 515,130 530,130" />
+              <path id="path-b-bf" d="M 490,215 C 500,215 515,130 530,130" />
+            </svg>
+            
+            <div class="arch-node" id="node-graph-req">
+              <span class="title">SERP Ad Call</span>
+              <span class="details">Search Result Req</span>
+            </div>
+            
+            <div class="arch-node" id="node-dag-router">
+              <span class="title">DAG Resolver</span>
+              <span class="details" id="graph-resolver-status">Evaluating Ad Tree</span>
+            </div>
+            
+            <div class="arch-node" id="node-prov-a">
+              <span class="title">Provider A (Direct)</span>
+              <span class="details" id="graph-prov-a-status">Status: Idle</span>
+            </div>
+            
+            <div class="arch-node" id="node-prov-b">
+              <span class="title">Provider B (Partner)</span>
+              <span class="details" id="graph-prov-b-status">Status: Idle</span>
+            </div>
+            
+            <div class="arch-node" id="node-backfill">
+              <span class="title">Backfill Ad</span>
+              <span class="details">Waterfall Fallback</span>
             </div>
           </div>
           

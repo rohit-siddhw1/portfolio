@@ -266,6 +266,9 @@ class ArchitectureVisualizer {
     this.runBtn = document.getElementById('run-simulation-btn');
     this.activeTab = 'cache';
 
+    this.attachmentsPaginationMode = 'cursor';
+    this.graphRoutingStrategy = 'parallel';
+
     this.init();
   }
 
@@ -292,6 +295,47 @@ class ArchitectureVisualizer {
         this.runTreeSearch();
       });
     }
+
+    // Attachments API toggles
+    const attCursorBtn = document.getElementById('att-pag-cursor');
+    const attOffsetBtn = document.getElementById('att-pag-offset');
+    const attQueryDetails = document.getElementById('attachments-query-type');
+    if (attCursorBtn && attOffsetBtn) {
+      attCursorBtn.addEventListener('click', () => {
+        attCursorBtn.classList.add('active');
+        attOffsetBtn.classList.remove('active');
+        this.attachmentsPaginationMode = 'cursor';
+        attQueryDetails.textContent = 'Cursor: cursor_x9281';
+      });
+      attOffsetBtn.addEventListener('click', () => {
+        attOffsetBtn.classList.add('active');
+        attCursorBtn.classList.remove('active');
+        this.attachmentsPaginationMode = 'offset';
+        attQueryDetails.textContent = 'Offset: Page 3 (Limit 20)';
+      });
+    }
+
+    // PurePlay Video triggers
+    const videoSimBtn = document.getElementById('video-simulate-btn');
+    if (videoSimBtn) {
+      videoSimBtn.addEventListener('click', () => this.simulatePureplayFlow());
+    }
+
+    // Graph Strategy toggles
+    const graphParallelBtn = document.getElementById('graph-strat-parallel');
+    const graphWaterfallBtn = document.getElementById('graph-strat-waterfall');
+    if (graphParallelBtn && graphWaterfallBtn) {
+      graphParallelBtn.addEventListener('click', () => {
+        graphParallelBtn.classList.add('active');
+        graphWaterfallBtn.classList.remove('active');
+        this.graphRoutingStrategy = 'parallel';
+      });
+      graphWaterfallBtn.addEventListener('click', () => {
+        graphWaterfallBtn.classList.add('active');
+        graphParallelBtn.classList.remove('active');
+        this.graphRoutingStrategy = 'waterfall';
+      });
+    }
   }
 
   switchTab(tabName) {
@@ -309,19 +353,47 @@ class ArchitectureVisualizer {
         <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
         Run Load Test
       `;
-    } else {
+      this.runBtn.style.display = 'inline-flex';
+    } else if (tabName === 'tree') {
       this.runBtn.innerHTML = `
         <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
         Trace Routing Path
       `;
+      this.runBtn.style.display = 'inline-flex';
+    } else if (tabName === 'reliability') {
+      this.runBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
+        Trigger Incident
+      `;
+      this.runBtn.style.display = 'inline-flex';
+    } else if (tabName === 'attachments') {
+      this.runBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
+        Fetch Attachments
+      `;
+      this.runBtn.style.display = 'inline-flex';
+    } else if (tabName === 'pureplay') {
+      this.runBtn.style.display = 'none'; // Controlled by classifier search bar buttons
+    } else if (tabName === 'graph') {
+      this.runBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
+        Execute Ad Selection
+      `;
+      this.runBtn.style.display = 'inline-flex';
     }
   }
 
   runSimulation() {
     if (this.activeTab === 'cache') {
       this.simulateCacheFlows();
-    } else {
+    } else if (this.activeTab === 'tree') {
       this.runTreeSearch();
+    } else if (this.activeTab === 'reliability') {
+      this.simulateReliabilityFlow();
+    } else if (this.activeTab === 'attachments') {
+      this.simulateAttachmentsFlow();
+    } else if (this.activeTab === 'graph') {
+      this.simulateGraphFlow();
     }
   }
 
@@ -349,7 +421,6 @@ class ArchitectureVisualizer {
     const rectStart = startNode.getBoundingClientRect();
     const rectEnd = endNode.getBoundingClientRect();
     
-    // Calculate center relative coordinates
     const x1 = rectStart.left - rectContainer.left + rectStart.width / 2;
     const y1 = rectStart.top - rectContainer.top + rectStart.height / 2;
     const x2 = rectEnd.left - rectContainer.left + rectEnd.width / 2;
@@ -373,8 +444,6 @@ class ArchitectureVisualizer {
     this.sysMon.simulateLoadSpike();
     this.runBtn.disabled = true;
 
-    // Simulate 3 successive requests flowing (2 hits, 1 miss)
-    
     // Flow 1: Cache Hit
     setTimeout(() => {
       this.animateNodeGlow('node-client', 'active-glow', 400);
@@ -442,6 +511,7 @@ class ArchitectureVisualizer {
   runTreeSearch() {
     const input = document.getElementById('ip-search-input');
     const msg = document.getElementById('tree-search-msg');
+    if (!input || !msg) return;
     const ip = input.value.trim();
 
     // Basic IP validation
@@ -525,6 +595,319 @@ class ArchitectureVisualizer {
     };
     
     step();
+  }
+
+  simulateReliabilityFlow() {
+    this.runBtn.disabled = true;
+
+    // Get nodes/paths details to modify & restore
+    const nodeSfxDetails = document.querySelector('#node-signalfx .details');
+    const nodeOgDetails = document.querySelector('#node-opsgenie .details');
+    const nodeSlackDetails = document.querySelector('#node-slack .details');
+    
+    // Save original values
+    const origSfx = nodeSfxDetails.innerHTML;
+    const origOg = nodeOgDetails.innerHTML;
+    const origSlack = nodeSlackDetails.innerHTML;
+
+    // 1. Terraform -> Sauron
+    this.animateNodeGlow('node-tf', 'active-glow', 400);
+    this.animatePacket('node-tf', 'node-sauron', 'green', 400, () => {
+      this.animateNodeGlow('node-sauron', 'active-glow', 400);
+      this.animatePathGlow('path-tf-sauron', 'active-path', 400);
+
+      // 2. Sauron -> SignalFx
+      this.animatePacket('node-sauron', 'node-signalfx', 'green', 400, () => {
+        this.animateNodeGlow('node-signalfx', 'active-glow', 600);
+        this.animatePathGlow('path-sauron-sfx', 'active-path', 600);
+
+        // 3. SignalFx anomaly detect
+        setTimeout(() => {
+          this.animateNodeGlow('node-signalfx', 'cache-miss-glow', 1500);
+          nodeSfxDetails.innerHTML = `<span style="color: var(--accent-orange); font-weight: bold;">CPU > 90% Alert</span>`;
+
+          // 4. Alert OpsGenie & Slack in parallel
+          setTimeout(() => {
+            // Animate to OpsGenie
+            this.animatePacket('node-signalfx', 'node-opsgenie', 'orange', 500, () => {
+              this.animateNodeGlow('node-opsgenie', 'cache-miss-glow', 1000);
+              nodeOgDetails.innerHTML = `<span style="color: var(--accent-orange); font-weight: bold;">Paging On-Call...</span>`;
+            });
+            this.animatePathGlow('path-sfx-og', 'miss-path', 1000);
+
+            // Animate to Slack
+            this.animatePacket('node-signalfx', 'node-slack', 'orange', 500, () => {
+              this.animateNodeGlow('node-slack', 'cache-miss-glow', 1000);
+              nodeSlackDetails.innerHTML = `<span style="color: var(--accent-orange); font-weight: bold;">SEV-2 Incident</span>`;
+            });
+            this.animatePathGlow('path-sfx-slack', 'miss-path', 1000);
+
+            // 5. Restore after incident settles
+            setTimeout(() => {
+              nodeSfxDetails.innerHTML = origSfx;
+              nodeOgDetails.innerHTML = origOg;
+              nodeSlackDetails.innerHTML = origSlack;
+              this.runBtn.disabled = false;
+            }, 3000);
+
+          }, 600);
+        }, 300);
+      });
+    });
+  }
+
+  simulateAttachmentsFlow() {
+    this.runBtn.disabled = true;
+
+    const nodeClientDetails = document.querySelector('#node-client-att .details');
+    const nodeSorterDetails = document.querySelector('#node-sorter .details');
+    const origClient = nodeClientDetails.innerHTML;
+    const origSorter = nodeSorterDetails.innerHTML;
+
+    // 1. Client -> Aggregator
+    this.animateNodeGlow('node-client-att', 'active-glow', 400);
+    this.animatePacket('node-client-att', 'node-aggregator', 'green', 400, () => {
+      this.animateNodeGlow('node-aggregator', 'active-glow', 500);
+      this.animatePathGlow('path-cli-agg', 'active-path', 500);
+
+      // 2. Parallel fan-out to 4 datasources
+      const sources = ['node-ds-static', 'node-ds-confluence', 'node-ds-whiteboard', 'node-ds-loom'];
+      const forwardPaths = ['path-agg-static', 'path-agg-conf', 'path-agg-white', 'path-agg-loom'];
+      
+      let responsesCount = 0;
+      
+      sources.forEach((source, idx) => {
+        this.animatePacket('node-aggregator', source, 'green', 500, () => {
+          this.animateNodeGlow(source, 'active-glow', 400);
+          this.animatePathGlow(forwardPaths[idx], 'active-path', 400);
+
+          // 3. Fan-in from datasources to Sorter node
+          const returnPaths = ['path-static-sort', 'path-conf-sort', 'path-white-sort', 'path-loom-sort'];
+          setTimeout(() => {
+            this.animatePacket(source, 'node-sorter', 'green', 500, () => {
+              responsesCount++;
+              if (responsesCount === 4) {
+                // All datasources returned payloads to Sorter
+                this.animateNodeGlow('node-sorter', 'active-glow', 800);
+                nodeSorterDetails.innerHTML = `<span style="color: var(--accent-green); font-weight: bold;">Sorting 40 records...</span>`;
+
+                // 4. Return to Client
+                setTimeout(() => {
+                  this.animatePacket('node-sorter', 'node-client-att', 'green', 600, () => {
+                    this.animateNodeGlow('node-client-att', 'cache-hit-glow', 1500);
+                    
+                    if (this.attachmentsPaginationMode === 'cursor') {
+                      nodeClientDetails.innerHTML = `<span style="color: var(--accent-green); font-weight: bold;">Loaded: cursor_x9282</span>`;
+                    } else {
+                      nodeClientDetails.innerHTML = `<span style="color: var(--accent-green); font-weight: bold;">Loaded: Page 3 (Limit 20)</span>`;
+                    }
+
+                    // Reset & Enable
+                    setTimeout(() => {
+                      nodeClientDetails.innerHTML = origClient;
+                      nodeSorterDetails.innerHTML = origSorter;
+                      this.runBtn.disabled = false;
+                    }, 3000);
+                  });
+                  this.animatePathGlow('path-sort-cli', 'hit-path', 600);
+                }, 600);
+              }
+            });
+            this.animatePathGlow(returnPaths[idx], 'hit-path', 500);
+          }, 300);
+        });
+      });
+    });
+  }
+
+  simulatePureplayFlow() {
+    const simBtn = document.getElementById('video-simulate-btn');
+    if (simBtn) simBtn.disabled = true;
+
+    const tagInput = document.getElementById('video-tag-input');
+    const tagVal = (tagInput ? tagInput.value : 'Tech Review').trim().toLowerCase();
+
+    // Determine category details based on input tag
+    let category = 'IAB: General / Ent. (IAB1)';
+    let cpm = '$2.50 CPM';
+    let adText = 'Ad Overlay: E-Commerce Shop';
+    let videoPreview = '🎬 Video Content';
+
+    if (tagVal.includes('game') || tagVal.includes('play') || tagVal.includes('xbox') || tagVal.includes('ps5')) {
+      category = 'IAB: Games (IAB14)';
+      cpm = '$4.80 CPM';
+      adText = 'Ad Overlay: Razer Gaming Gear';
+      videoPreview = '🎮 Gaming Shorts';
+    } else if (tagVal.includes('tech') || tagVal.includes('review') || tagVal.includes('phone') || tagVal.includes('laptop') || tagVal.includes('device')) {
+      category = 'IAB: Technology (IAB19)';
+      cpm = '$5.50 CPM';
+      adText = 'Ad Overlay: Cloud Hosting VPN';
+      videoPreview = '💻 Tech Review';
+    } else if (tagVal.includes('vlog') || tagVal.includes('lifestyle') || tagVal.includes('travel') || tagVal.includes('trip') || tagVal.includes('food')) {
+      category = 'IAB: Travel (IAB20)';
+      cpm = '$3.20 CPM';
+      adText = 'Ad Overlay: Travel Booking App';
+      videoPreview = '✈️ Travel Vlog';
+    }
+
+    const catEl = document.getElementById('pureplay-category');
+    const fillEl = document.getElementById('pureplay-ad-fill');
+    const feedEl = document.getElementById('player-feed');
+    const adDetailsEl = document.getElementById('player-ad-details');
+
+    const origCat = catEl.innerHTML;
+    const origFill = fillEl.innerHTML;
+    const origFeed = feedEl.innerHTML;
+    const origAdDetails = adDetailsEl.innerHTML;
+
+    // Reset player states visually
+    feedEl.textContent = '[Analysing...]';
+    adDetailsEl.textContent = 'Ad Overlay: Loading...';
+
+    // 1. Publisher -> Classifier
+    this.animateNodeGlow('node-publisher', 'active-glow', 400);
+    this.animatePacket('node-publisher', 'node-classifier', 'blue', 400, () => {
+      this.animateNodeGlow('node-classifier', 'active-glow', 600);
+      this.animatePathGlow('path-pub-class', 'active-path', 600);
+      
+      catEl.innerHTML = `<span style="color: var(--accent-green); font-weight: bold;">${category}</span>`;
+
+      // 2. Classifier -> Prebid
+      setTimeout(() => {
+        this.animatePacket('node-classifier', 'node-prebid', 'blue', 400, () => {
+          this.animateNodeGlow('node-prebid', 'active-glow', 600);
+          this.animatePathGlow('path-class-prebid', 'active-path', 600);
+
+          fillEl.innerHTML = `<span style="color: var(--accent-green); font-weight: bold;">Bid Win: ${cpm}</span>`;
+
+          // 3. Prebid -> Player
+          setTimeout(() => {
+            this.animatePacket('node-prebid', 'node-player', 'green', 500, () => {
+              this.animateNodeGlow('node-player', 'cache-hit-glow', 1500);
+              
+              feedEl.textContent = videoPreview;
+              adDetailsEl.innerHTML = `<span style="color: var(--accent-green)">${adText} (${cpm})</span>`;
+
+              // Restore
+              setTimeout(() => {
+                catEl.innerHTML = origCat;
+                fillEl.innerHTML = origFill;
+                feedEl.innerHTML = origFeed;
+                adDetailsEl.innerHTML = origAdDetails;
+                if (simBtn) simBtn.disabled = false;
+              }, 4000);
+            });
+            this.animatePathGlow('path-prebid-player', 'hit-path', 500);
+          }, 400);
+        });
+      }, 400);
+    });
+  }
+
+  simulateGraphFlow() {
+    this.runBtn.disabled = true;
+
+    const routerStatus = document.getElementById('graph-resolver-status');
+    const provAStatus = document.getElementById('graph-prov-a-status');
+    const provBStatus = document.getElementById('graph-prov-b-status');
+    const backfillDetails = document.querySelector('#node-backfill .details');
+
+    const origRouter = routerStatus.innerHTML;
+    const origProvA = provAStatus.innerHTML;
+    const origProvB = provBStatus.innerHTML;
+    const origBackfill = backfillDetails.innerHTML;
+
+    // 1. SERP Ad Call -> DAG Router
+    this.animateNodeGlow('node-graph-req', 'active-glow', 400);
+    this.animatePacket('node-graph-req', 'node-dag-router', 'blue', 400, () => {
+      this.animateNodeGlow('node-dag-router', 'active-glow', 500);
+      this.animatePathGlow('path-req-router', 'active-path', 500);
+      routerStatus.innerHTML = `<span style="color: var(--accent-blue)">Evaluating routes...</span>`;
+
+      if (this.graphRoutingStrategy === 'parallel') {
+        // Parallel Strategy
+        setTimeout(() => {
+          routerStatus.innerHTML = `<span style="color: var(--accent-blue)">Parallel dispatch to Providers...</span>`;
+
+          // Fire A and B concurrently
+          this.animatePacket('node-dag-router', 'node-prov-a', 'blue', 500, () => {
+            this.animateNodeGlow('node-prov-a', 'active-glow', 500);
+            provAStatus.innerHTML = `<span style="color: var(--accent-green); font-weight: bold;">Returned Bid ($3.20 CPM)</span>`;
+          });
+          this.animatePathGlow('path-router-a', 'active-path', 500);
+
+          this.animatePacket('node-dag-router', 'node-prov-b', 'blue', 500, () => {
+            this.animateNodeGlow('node-prov-b', 'active-glow', 500);
+            provBStatus.innerHTML = `No Bid (Low CPM)`;
+          });
+          this.animatePathGlow('path-router-b', 'active-path', 500);
+
+          // Once query resolves (say 800ms)
+          setTimeout(() => {
+            routerStatus.innerHTML = `<span style="color: var(--accent-green)">Winner: Provider A (Direct)</span>`;
+            
+            // Animate packet from Provider A back to DAG router
+            this.animatePacket('node-prov-a', 'node-dag-router', 'green', 500, () => {
+              this.animateNodeGlow('node-dag-router', 'cache-hit-glow', 1000);
+              
+              setTimeout(() => {
+                routerStatus.innerHTML = origRouter;
+                provAStatus.innerHTML = origProvA;
+                provBStatus.innerHTML = origProvB;
+                backfillDetails.innerHTML = origBackfill;
+                this.runBtn.disabled = false;
+              }, 2500);
+            });
+          }, 900);
+
+        }, 400);
+
+      } else {
+        // Waterfall / Sequential Fallback Strategy
+        setTimeout(() => {
+          routerStatus.innerHTML = `<span style="color: var(--accent-orange)">Trying Provider A...</span>`;
+          
+          // Query Prov A
+          this.animatePacket('node-dag-router', 'node-prov-a', 'orange', 500, () => {
+            this.animateNodeGlow('node-prov-a', 'cache-miss-glow', 500);
+            provAStatus.innerHTML = `<span style="color: var(--accent-orange)">No Bid (Timeout)</span>`;
+
+            // Provider A failed. Try Provider B.
+            setTimeout(() => {
+              routerStatus.innerHTML = `<span style="color: var(--accent-orange)">Trying Provider B...</span>`;
+              
+              this.animatePacket('node-dag-router', 'node-prov-b', 'orange', 500, () => {
+                this.animateNodeGlow('node-prov-b', 'cache-miss-glow', 500);
+                provBStatus.innerHTML = `<span style="color: var(--accent-orange)">No Bid (No Match)</span>`;
+
+                // Both A and B failed. Fallback to Backfill Ad!
+                setTimeout(() => {
+                  routerStatus.innerHTML = `<span style="color: var(--accent-orange)">Triggering Backfill Waterfall...</span>`;
+
+                  this.animatePacket('node-dag-router', 'node-backfill', 'orange', 600, () => {
+                    this.animateNodeGlow('node-backfill', 'cache-hit-glow', 1000);
+                    backfillDetails.innerHTML = `<span style="color: var(--accent-green); font-weight: bold;">Served ($0.80 CPM)</span>`;
+                    routerStatus.innerHTML = `<span style="color: var(--accent-green)">Waterfall Complete (Backfill)</span>`;
+
+                    // Reset & Enable
+                    setTimeout(() => {
+                      routerStatus.innerHTML = origRouter;
+                      provAStatus.innerHTML = origProvA;
+                      provBStatus.innerHTML = origProvB;
+                      backfillDetails.innerHTML = origBackfill;
+                      this.runBtn.disabled = false;
+                    }, 3000);
+                  });
+                }, 500);
+              });
+              this.animatePathGlow('path-router-b', 'miss-path', 500);
+            }, 500);
+          });
+          this.animatePathGlow('path-router-a', 'miss-path', 500);
+
+        }, 400);
+      }
+    });
   }
 }
 
