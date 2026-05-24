@@ -1002,12 +1002,26 @@ section.panel {
 }
 
 .experience-list {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.2rem;
+  padding-left: 30px;
+}
+
+.experience-list::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  bottom: 15px;
+  width: 2px;
+  background-color: var(--border);
+  z-index: 1;
 }
 
 .company-tab-btn {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1017,6 +1031,22 @@ section.panel {
   background-color: var(--bg-secondary);
   text-align: left;
   transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.company-tab-btn::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: 1.5rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--bg-secondary);
+  border: 2px solid var(--border);
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  transition: all var(--transition-fast);
 }
 
 .company-tab-btn:hover {
@@ -1024,10 +1054,20 @@ section.panel {
   background-color: var(--bg-code);
 }
 
+.company-tab-btn:hover::before {
+  border-color: var(--accent-blue);
+}
+
 .company-tab-btn.active {
   border-color: var(--accent-blue);
   background-color: var(--bg-code);
   box-shadow: 0 4px 12px var(--glow);
+}
+
+.company-tab-btn.active::before {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 8px var(--accent-blue);
 }
 
 .company-tab-btn .name {
@@ -1628,12 +1668,19 @@ footer.app-footer {
     flex-direction: row;
     overflow-x: auto;
     padding-bottom: 0.5rem;
+    padding-left: 0;
+  }
+  .experience-list::before {
+    display: none;
   }
   .company-tab-btn {
     flex-shrink: 0;
     min-width: 160px;
     align-items: center;
     padding: 0.6rem 1rem;
+  }
+  .company-tab-btn::before {
+    display: none;
   }
   .company-tab-btn .date {
     margin-top: 0.2rem;

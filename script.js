@@ -1263,8 +1263,8 @@ document.addEventListener('DOMContentLoaded', () => {
         visualizer.switchTab('tree');
         document.getElementById('architecture').scrollIntoView({ behavior: 'smooth' });
       } else if (target === 'adoption') {
-        // Just scroll directly to Experience where Atlassian dashboards are details
-        document.getElementById('experience').scrollIntoView({ behavior: 'smooth' });
+        visualizer.switchTab('reliability');
+        document.getElementById('architecture').scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
