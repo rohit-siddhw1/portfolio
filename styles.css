@@ -1104,11 +1104,16 @@ section.panel {
 }
 
 .code-view {
+  display: none;
   font-family: var(--font-mono);
   font-size: 0.82rem;
   line-height: 1.5;
   white-space: pre-wrap;
   color: var(--text-primary);
+}
+
+.code-view.active {
+  display: block;
 }
 
 /* JSON / YAML Syntax Highlighting simulated with classes */
@@ -1119,9 +1124,13 @@ section.panel {
 .code-view .keyword { color: var(--accent-purple); }
 
 .formatted-view {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.formatted-view.active {
+  display: flex;
 }
 
 .job-header {
@@ -1266,6 +1275,16 @@ section.panel {
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+.project-header h3 a {
+  color: inherit;
+  transition: color var(--transition-fast);
+}
+
+.project-header h3 a:hover {
+  color: var(--accent-blue);
+  text-decoration: none;
 }
 
 .project-icon {
