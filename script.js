@@ -770,8 +770,15 @@ class DeveloperTerminal {
         break;
       case 'projects':
         this.writeLine(
-          `<strong>Debug+</strong>: Chrome Extension for request analysis, interception, and difference testing.<br>` +
-          `<strong>Tree-Leveled Cipher</strong>: Custom tree balanced permutation cipher algorithm.`
+          `<strong>Debug+</strong>: Chrome Extension for request interception and diff analysis (Internal).<br>` +
+          `<strong>Tree-Leveled Cipher</strong>: Custom matrix encryption cipher using binary tree traversal.<br>` +
+          `  ↳ GitHub: <a href="https://github.com/rohit-siddhw1/tree-leveled-cipher" target="_blank">tree-leveled-cipher</a><br>` +
+          `<strong>Red-Black Tree</strong>: Java implementation of a self-balancing binary search tree.<br>` +
+          `  ↳ GitHub: <a href="https://github.com/rohit-siddhw1/red-black-tree" target="_blank">red-black-tree</a><br>` +
+          `<strong>Flappy Bird OpenGL</strong>: Real-time game engine clone in C using OpenGL and GLUT.<br>` +
+          `  ↳ GitHub: <a href="https://github.com/rohit-siddhw1/flappy-bird-opengl" target="_blank">flappy-bird-opengl</a><br>` +
+          `<strong>Modern JS Slides</strong>: Reveal.js presentation detailing ES6+ features and client performance.<br>` +
+          `  ↳ GitHub: <a href="https://github.com/rohit-siddhw1/Modern-Javascript-on-the-Browser" target="_blank">Modern-Javascript-on-the-Browser</a>`
         );
         break;
       case 'stats':
