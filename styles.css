@@ -404,7 +404,7 @@ section.panel {
 .hero-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-bottom: 2rem;
 }
 
@@ -437,6 +437,7 @@ section.panel {
 
 .hero-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -484,6 +485,7 @@ section.panel {
   font-size: 0.85rem;
   position: relative;
   overflow: hidden;
+  word-break: break-word;
 }
 
 .systems-status-panel::before {
@@ -529,7 +531,10 @@ section.panel {
 .status-metric-row {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
   padding: 0.3rem 0;
+  flex-wrap: wrap;
 }
 
 .status-metric-row .label {
@@ -949,6 +954,7 @@ section.panel {
   justify-content: center;
   margin-top: -0.5rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
 .tree-search-bar input {
@@ -1694,80 +1700,158 @@ footer.app-footer {
 }
 
 @media (max-width: 768px) {
+  /* Container padding */
+  main.container {
+    padding: 1.5rem 1rem;
+    gap: 3rem;
+  }
+
+  /* Header */
   header.app-header {
-    padding: 0.8rem 1rem;
+    padding: 0.6rem 0.8rem;
+  }
+  /* Shrink the brand/prompt text so it fits next to theme buttons */
+  .brand {
+    font-size: 0.9rem;
   }
   nav.main-nav {
-    display: none; /* Hide default nav link on small screens, user can search or terminal */
+    display: none;
   }
+
+  /* Hero */
   .hero-info h1 {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  /* Prevent long email address overflowing badge */
+  .contact-badge {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .metrics-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  /* Allow tall diagrams (Attachments 620px, etc.) to show without clipping */
+  .architecture-box {
+    overflow: visible;
+  }
+
+  /* Arch controls: stack groups vertically, Run Load Test at bottom */
   .arch-controls {
     flex-direction: column;
     align-items: stretch;
     gap: 0.8rem;
     padding: 0.8rem 1rem;
   }
+  .arch-action-btn {
+    align-self: flex-start;
+  }
+  .arch-tabs-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+  /* Remove the min-width so the label wraps cleanly */
+  .group-title {
+    min-width: auto;
+  }
+  .arch-tabs {
+    flex-wrap: wrap;
+  }
+  /* Canvas container adapts height to its diagram */
   .arch-canvas-container {
     padding: 1rem;
-    min-height: 440px;
+    min-height: 500px;
+    align-items: flex-start;
+    overflow: visible;
   }
-  /* Node Scale/Stack for Mobile Diagram */
+  /* Hide SVG connectors — they don't reflow for stacked layout */
+  .arch-links-overlay {
+    display: none;
+  }
+  /* All arch-diagram boxes */
   .arch-diagram {
     height: 480px;
+    width: 100%;
   }
-  .arch-links-overlay {
-    display: none; /* Hide SVG links on mobile to prevent clutter */
-  }
+  /* Force all nodes to centre-stack */
   .arch-node {
     left: calc(50% - 70px) !important;
     width: 140px !important;
     right: auto !important;
   }
-  
-  /* Stacking nodes vertically for all diagrams on mobile */
-  /* Diag Cache */
+
+  /* ── Distributed Cache (5 nodes) ── */
   #diag-cache #node-client { top: 20px; }
   #diag-cache #node-lb     { top: 110px; }
   #diag-cache #node-cache  { top: 200px; }
   #diag-cache #node-origin { top: 290px; }
   #diag-cache #node-db     { top: 380px; }
-  
-  /* Diag Reliability */
+
+  /* ── Reliability Pipeline (5 nodes) ── */
   #diag-reliability #node-tf        { top: 20px; }
   #diag-reliability #node-sauron    { top: 110px; }
   #diag-reliability #node-signalfx  { top: 200px; }
   #diag-reliability #node-opsgenie  { top: 290px; }
   #diag-reliability #node-slack     { top: 380px; }
-  
-  /* Diag Attachments */
+
+  /* ── Attachments API (7 nodes) — single-column, taller box ── */
+  #diag-attachments {
+    height: 620px;
+  }
+  /* override the 2-col layout, revert all to centre column */
+  #diag-attachments #node-client-att,
+  #diag-attachments #node-aggregator,
+  #diag-attachments #node-ds-static,
+  #diag-attachments #node-ds-confluence,
+  #diag-attachments #node-ds-whiteboard,
+  #diag-attachments #node-ds-loom,
+  #diag-attachments #node-sorter {
+    left: calc(50% - 70px) !important;
+    width: 140px !important;
+  }
   #diag-attachments #node-client-att     { top: 20px; }
   #diag-attachments #node-aggregator     { top: 100px; }
-  #diag-attachments #node-ds-static      { top: 180px; left: calc(50% - 150px) !important; width: 140px !important; }
-  #diag-attachments #node-ds-confluence  { top: 180px; left: calc(50% + 10px) !important; width: 140px !important; }
-  #diag-attachments #node-ds-whiteboard  { top: 260px; left: calc(50% - 150px) !important; width: 140px !important; }
-  #diag-attachments #node-ds-loom        { top: 260px; left: calc(50% + 10px) !important; width: 140px !important; }
-  #diag-attachments #node-sorter         { top: 340px; }
-  
-  /* Diag PurePlay */
-  #diag-pureplay #node-publisher   { top: 20px; }
-  #diag-pureplay #node-classifier  { top: 110px; }
-  #diag-pureplay #node-prebid      { top: 200px; }
-  #diag-pureplay #node-player      { top: 290px; height: 160px !important; }
-  
-  /* Diag Graph */
-  #diag-graph #node-graph-req   { top: 20px; }
-  #diag-graph #node-dag-router  { top: 110px; }
-  #diag-graph #node-prov-a      { top: 200px; }
-  #diag-graph #node-prov-b      { top: 290px; }
-  #diag-graph #node-backfill    { top: 380px; }
-  
+  #diag-attachments #node-ds-static      { top: 190px; }
+  #diag-attachments #node-ds-confluence  { top: 270px; }
+  #diag-attachments #node-ds-whiteboard  { top: 350px; }
+  #diag-attachments #node-ds-loom        { top: 430px; }
+  #diag-attachments #node-sorter         { top: 520px; }
+
+  /* ── PurePlay Video (4 nodes + search bar) ── */
+  /* nodes start after the ~70px search bar area */
+  #diag-pureplay {
+    height: 540px;
+  }
+  #diag-pureplay #node-publisher   { top: 80px; }
+  #diag-pureplay #node-classifier  { top: 180px; }
+  #diag-pureplay #node-prebid      { top: 280px; }
+  #diag-pureplay #node-player      { top: 370px; height: 140px !important; }
+
+  /* ── Graph Engine (5 nodes + strategy bar) ── */
+  #diag-graph {
+    height: 580px;
+  }
+  #diag-graph #node-graph-req   { top: 80px; }
+  #diag-graph #node-dag-router  { top: 180px; }
+  #diag-graph #node-prov-a      { top: 270px; }
+  #diag-graph #node-prov-b      { top: 360px; }
+  #diag-graph #node-backfill    { top: 460px; }
+
+  /* ── GeoIP Tree ── flex-based, no absolute nodes, just needs overflow room ── */
+  #diag-tree {
+    height: auto;
+    min-height: 380px;
+  }
   .tree-node-row {
-    gap: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 }
 
@@ -1785,6 +1869,50 @@ footer.app-footer {
   }
   .terminal-suggest {
     display: none;
+  }
+  /* Further shrink hero on very small screens */
+  .hero-info h1 {
+    font-size: 1.75rem;
+  }
+  .hero-subtitle {
+    font-size: 0.82rem;
+  }
+  /* Tighten diagram node widths for tiny phones */
+  .arch-node {
+    left: calc(50% - 60px) !important;
+    width: 120px !important;
+    font-size: 0.68rem;
+    padding: 0.6rem 0.8rem;
+  }
+  /* Shift each diagram's nodes to match 120px-width centring */
+  #diag-cache #node-client,
+  #diag-cache #node-lb,
+  #diag-cache #node-cache,
+  #diag-cache #node-origin,
+  #diag-cache #node-db,
+  #diag-reliability #node-tf,
+  #diag-reliability #node-sauron,
+  #diag-reliability #node-signalfx,
+  #diag-reliability #node-opsgenie,
+  #diag-reliability #node-slack,
+  #diag-attachments #node-client-att,
+  #diag-attachments #node-aggregator,
+  #diag-attachments #node-ds-static,
+  #diag-attachments #node-ds-confluence,
+  #diag-attachments #node-ds-whiteboard,
+  #diag-attachments #node-ds-loom,
+  #diag-attachments #node-sorter,
+  #diag-pureplay #node-publisher,
+  #diag-pureplay #node-classifier,
+  #diag-pureplay #node-prebid,
+  #diag-pureplay #node-player,
+  #diag-graph #node-graph-req,
+  #diag-graph #node-dag-router,
+  #diag-graph #node-prov-a,
+  #diag-graph #node-prov-b,
+  #diag-graph #node-backfill {
+    left: calc(50% - 60px) !important;
+    width: 120px !important;
   }
 }
 
@@ -2107,18 +2235,51 @@ footer.app-footer {
 }
 
 /* Responsive Overrides */
+/* Dynamic positioning overrides for draggable chatbot container */
+.ai-chatbot-container.render-below {
+  flex-direction: column-reverse;
+}
+.ai-chatbot-container.render-below .chatbot-window {
+  margin-bottom: 0;
+  margin-top: 16px;
+}
+.ai-chatbot-container.render-left {
+  align-items: flex-start;
+}
+
 @media (max-width: 480px) {
-  .ai-chatbot-container {
+  /* Default snapped positioning on mobile, only when not dragged */
+  .ai-chatbot-container:not(.dragged) {
     bottom: 56px;
     right: 12px;
     left: 12px;
     align-items: stretch;
   }
-  .chatbot-window {
+  .ai-chatbot-container:not(.dragged) .chatbot-window {
     width: auto;
-    height: 400px;
+    height: 380px;
   }
-  .ai-chatbot-fab {
+  .ai-chatbot-container:not(.dragged) .ai-chatbot-fab {
     align-self: flex-end;
+  }
+
+  /* Custom sizing for chatbot window when dragged on mobile */
+  .ai-chatbot-container.dragged .chatbot-window {
+    width: calc(100vw - 24px);
+    max-width: 360px;
+    height: 360px;
+  }
+
+  /* Tree diagram scaling to fit mobile screen */
+  .tree-node-row {
+    gap: 0.4rem;
+  }
+  .tree-node {
+    font-size: 0.65rem;
+    padding: 0.35rem 0.5rem;
+    min-width: 65px;
+  }
+  #tree-node-root {
+    min-width: 140px;
   }
 }
