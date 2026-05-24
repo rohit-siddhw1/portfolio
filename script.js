@@ -1215,6 +1215,260 @@ class DeveloperTerminal {
 }
 
 // ==========================================
+// AI Chatbot Controller
+// ==========================================
+class AIChatbot {
+  constructor() {
+    this.container = document.getElementById('ai-chatbot');
+    this.fab = document.getElementById('chatbot-fab');
+    this.window = document.getElementById('chatbot-window');
+    this.closeBtn = document.getElementById('chatbot-close');
+    this.messagesContainer = document.getElementById('chatbot-messages');
+    this.form = document.getElementById('chatbot-form');
+    this.input = document.getElementById('chatbot-input');
+    this.chips = document.querySelectorAll('.chatbot-quick-chips .chip');
+
+    this.messages = [];
+    this.isOpen = false;
+
+    if (this.container && this.fab && this.window) {
+      this.init();
+    }
+  }
+
+  init() {
+    // Open/Close toggle
+    this.fab.addEventListener('click', () => this.toggle());
+    this.closeBtn.addEventListener('click', () => this.close());
+
+    // Submit handler
+    this.form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.handleUserSubmit();
+    });
+
+    // Suggestion chips handler
+    this.chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const question = chip.dataset.question;
+        if (question) {
+          this.sendMessage(question);
+        }
+      });
+    });
+
+    // Close on click outside on mobile
+    document.addEventListener('click', (e) => {
+      if (this.isOpen && !this.container.contains(e.target)) {
+        this.close();
+      }
+    });
+
+    // Load history or initialize welcome message
+    this.loadHistory();
+  }
+
+  toggle() {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.open();
+    }
+  }
+
+  open() {
+    this.isOpen = true;
+    this.container.classList.add('open');
+    this.window.setAttribute('aria-hidden', 'false');
+    
+    // Hide notification dot if visible
+    const dot = this.container.querySelector('.fab-notification-dot');
+    if (dot) dot.style.display = 'none';
+
+    // Focus input on desktop
+    setTimeout(() => {
+      if (window.innerWidth > 768) {
+        this.input.focus();
+      }
+      this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+    }, 300);
+  }
+
+  close() {
+    this.isOpen = false;
+    this.container.classList.remove('open');
+    this.window.setAttribute('aria-hidden', 'true');
+    this.input.blur();
+  }
+
+  loadHistory() {
+    const saved = sessionStorage.getItem('portfolio_chat_history');
+    if (saved) {
+      try {
+        this.messages = JSON.parse(saved);
+        this.renderAllMessages();
+        return;
+      } catch (e) {
+        console.error("Failed to parse chat history:", e);
+      }
+    }
+
+    // Default Greeting
+    this.messages = [
+      {
+        role: 'assistant',
+        content: `Hi! I'm Rohit's AI Assistant. Ask me anything about his backend and systems engineering experience at Atlassian and Media.net, his technical skills, or his projects. How can I help you today?`
+      }
+    ];
+    this.renderAllMessages();
+  }
+
+  saveHistory() {
+    sessionStorage.setItem('portfolio_chat_history', JSON.stringify(this.messages));
+  }
+
+  renderAllMessages() {
+    this.messagesContainer.innerHTML = '';
+    this.messages.forEach(msg => {
+      this.appendMessageElement(msg.role, msg.content);
+    });
+    this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+  }
+
+  appendMessageElement(role, text, isError = false) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `chatbot-message ${role}${isError ? ' system-error' : ''}`;
+    
+    if (role === 'assistant' && !isError) {
+      msgDiv.innerHTML = this.formatMarkdown(text);
+    } else {
+      msgDiv.textContent = text;
+    }
+    
+    this.messagesContainer.appendChild(msgDiv);
+    this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+  }
+
+  formatMarkdown(text) {
+    // 1. Escaping HTML first to prevent XSS
+    let html = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
+    // 2. Bold text **text**
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // 3. Inline code `code`
+    html = html.replace(/`(.*?)`/g, '<code>$1</code>');
+
+    // 4. Links [text](url)
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+    // 5. Line items: lines starting with "- " or "* "
+    const lines = html.split('\n');
+    let inList = false;
+    let result = [];
+
+    for (let line of lines) {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        if (!inList) {
+          inList = true;
+          result.push('<ul>');
+        }
+        result.push(`<li>${trimmed.substring(2)}</li>`);
+      } else {
+        if (inList) {
+          inList = false;
+          result.push('</ul>');
+        }
+        if (trimmed) {
+          result.push(`<p>${trimmed}</p>`);
+        }
+      }
+    }
+    if (inList) {
+      result.push('</ul>');
+    }
+
+    return result.join('\n');
+  }
+
+  handleUserSubmit() {
+    const text = this.input.value.trim();
+    if (!text) return;
+    this.input.value = '';
+    this.sendMessage(text);
+  }
+
+  async sendMessage(text) {
+    // Add user message to state and UI
+    this.messages.push({ role: 'user', content: text });
+    this.appendMessageElement('user', text);
+    this.saveHistory();
+
+    // Show typing indicator
+    this.showTypingIndicator();
+
+    try {
+      // Call Netlify serverless function
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          messages: this.messages
+        })
+      });
+
+      this.removeTypingIndicator();
+
+      if (!response.ok) {
+        throw new Error(`Server returned status ${response.status}`);
+      }
+
+      const data = await response.json();
+      const reply = data.reply || "I'm sorry, I encountered an empty response. Please try again.";
+
+      // Add assistant message to state and UI
+      this.messages.push({ role: 'assistant', content: reply });
+      this.appendMessageElement('assistant', reply);
+      this.saveHistory();
+
+    } catch (err) {
+      console.error("Chat communication error:", err);
+      this.removeTypingIndicator();
+      this.appendMessageElement('assistant', "Sorry, I'm having trouble connecting to the backend. Please try again in a moment.", true);
+    }
+  }
+
+  showTypingIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'chatbot-message assistant';
+    indicator.id = 'typing-indicator';
+    indicator.style.borderBottomLeftRadius = '2px';
+    indicator.innerHTML = `
+      <div class="typing-indicator">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+    `;
+    this.messagesContainer.appendChild(indicator);
+    this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+  }
+
+  removeTypingIndicator() {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) {
+      indicator.remove();
+    }
+  }
+}
+
+// ==========================================
 // Scroll Reveal Controller
 // ==========================================
 function initScrollReveal() {
@@ -1281,6 +1535,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Setup Terminal Drawer
   const terminal = new DeveloperTerminal(sysMon);
+
+  // Setup AI Chatbot
+  const chatbot = new AIChatbot();
 
   // Setup Scroll reveals
   initScrollReveal();

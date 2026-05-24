@@ -913,6 +913,52 @@
   }
   </script>
 
+  <!-- AI Chatbot Widget -->
+  <div class="ai-chatbot-container" id="ai-chatbot">
+    <button class="ai-chatbot-fab" id="chatbot-fab" aria-label="Open AI Assistant" title="Ask Rohit's AI Assistant">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm0-3h12v2H6V6zm0 6h9v2H6v-2z" fill="currentColor"/>
+      </svg>
+      <span class="fab-notification-dot"></span>
+    </button>
+    
+    <div class="chatbot-window" id="chatbot-window" aria-hidden="true">
+      <div class="chatbot-header">
+        <div class="chatbot-status-group">
+          <div class="chatbot-avatar">
+            <span class="avatar-text">RS</span>
+            <span class="status-dot online"></span>
+          </div>
+          <div class="chatbot-header-info">
+            <div class="chatbot-title">Rohit's AI Assistant</div>
+            <div class="chatbot-subtitle">Online • Ask me anything</div>
+          </div>
+        </div>
+        <button class="chatbot-close-btn" id="chatbot-close" aria-label="Close Chat Window">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      
+      <div class="chatbot-body" id="chatbot-messages">
+        <!-- Messages will be dynamically rendered here -->
+      </div>
+
+      <div class="chatbot-quick-chips">
+        <button class="chip" data-question="Tell me about Rohit's current role at Atlassian.">Atlassian Role</button>
+        <button class="chip" data-question="What are his core technical skills?">Technical Skills</button>
+        <button class="chip" data-question="Tell me about the Graph-Engine project at Media.net.">Graph-Engine Project</button>
+        <button class="chip" data-question="How can I contact Rohit?">Contact Details</button>
+      </div>
+      
+      <form class="chatbot-footer" id="chatbot-form">
+        <input type="text" id="chatbot-input" placeholder="Type a message..." autocomplete="off" spellcheck="false" aria-label="Type your message">
+        <button type="submit" class="chatbot-send-btn" id="chatbot-send" aria-label="Send Message">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
